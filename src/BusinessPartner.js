@@ -13,6 +13,8 @@ class BusinessPartner extends ModalComponent {
       modalIsOpen: false,
       bp: this.props.bp
     };
+    this.doDelete = this.doDelete.bind(this);
+    this.app = this.props.app;
   }
  
   doCloseModal(bp) {
@@ -20,14 +22,16 @@ class BusinessPartner extends ModalComponent {
     this.closeModal();
   }
 
- 
- 
+  doDelete() {
+    this.props.del(this.state.bp, this.app);
+  }
+  
   render() {
     var bp = this.state.bp;
     return (<tr key={bp.CardCode}>
               <td>
                 <Button bsStyle="warning" onClick={this.showModal}/>
-                <Button bsStyle="danger" onClick={this.props.doDelete}/>
+                <Button bsStyle="danger" onClick={this.doDelete}/>
                 <Modal onRequestClose={this.closeModal}
                        contentLabel='Business Partner'
                        isOpen={this.state.modalIsOpen}>

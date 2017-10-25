@@ -12,10 +12,17 @@ class BusinessPartnerService {
     return ServiceLayer.post(resource, bp);
   }
 
+  static del(bp) {
+    console.log(bp);
+    var resource = `BusinessPartners('${bp.CardCode}')`;
+    return ServiceLayer.del(resource, bp);
+  }
+
   static getAll() {
+    //TODO:  implement paging.
     var resource = 'BusinessPartners?$orderby=CardCode';
     return ServiceLayer.get(resource);
   }
-}
 
+}
 export default BusinessPartnerService;

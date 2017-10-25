@@ -12,6 +12,7 @@ class BusinessPartnerForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.doCreate = this.doCreate.bind(this);
     this.doSave = this.doSave.bind(this);
+    this.doDelete = this.doDelete.bind(this);
 
     console.log('got this in bpform ctor: ', this.props);
     this.state = {
@@ -46,6 +47,15 @@ class BusinessPartnerForm extends Component {
 
   doSave(e) {
     BusinessPartnerService.update(this.state.bp).then(json => {
+      //console.log(json);
+      this.props.operationCompleted(this.state.bp);
+    }).catch(error => {
+      this.setState({message: error, bp: this.state.bp}); 
+    });
+  }
+
+  doDelete(e) {
+    BusinessPartnerService.del(this.state.bp).then(json => {
       //console.log(json);
       this.props.operationCompleted(this.state.bp);
     }).catch(error => {

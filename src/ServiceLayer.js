@@ -49,6 +49,15 @@ class ServiceLayer {
     }));
   }
 
+  static del(name, payload) {
+    console.log('delete', name, payload);
+    var url = this.resource(name);
+    return fetch(url, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+  }
+
   static login(credentials) {
     return this.post('Login', credentials);
   }

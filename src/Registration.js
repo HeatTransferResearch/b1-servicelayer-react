@@ -23,6 +23,7 @@ class Registration extends ModalComponent {
     super(props);
     this.doCloseModal = this.doCloseModal.bind(this);
     this.getData = this.getData.bind(this);
+    this.doDelete = this.doDelete.bind(this);
     this.state = {items: []};
   }
  
@@ -31,6 +32,18 @@ class Registration extends ModalComponent {
     this.closeModal();
   }
 
+  doDelete(bp, app) {
+    BusinessPartnerService.del(bp).then(_ => {
+      console.log('now refresh.');
+      BusinessPartnerService.getAll().then(json =>  {
+        var newState = {items: json.value, reloaded: 'yes'};
+        this.setState(newState, () => { console.log('set: ', app.state)} ); 
+      }).catch(function (error, z) {
+        console.log('fetch() bps failed: ' + error);        
+      });
+    });
+
+  }
 
   render() {
     var items = this.state.items;
@@ -39,7 +52,7 @@ class Registration extends ModalComponent {
                  <Head/>
                  <tbody>
                  { items.map((item) => {
-                         return <BusinessPartner key={item.CardCode} bp={item} delete={this.doDelete}/>;
+                         return <BusinessPartner key={item.CardCode} bp={item} del={this.doDelete} app={this} />;
 
                        })
                  }
@@ -55,6 +68,7 @@ class Registration extends ModalComponent {
   }
 
   getData() {
+    //FIXME paging & search by name.
     BusinessPartnerService.getAll().then(json =>  {
       var newState = {items: json.value, reloaded: 'yes'};
       this.setState(newState, () => { console.log('set: ', this.state)} ); 
